@@ -29,6 +29,7 @@ class VideoProcessor:
 
         self._cap = cv2.VideoCapture(str(filename))
         fps = round(self._cap.get(cv2.CAP_PROP_FPS))
+        duration = round(round(self._cap.get(cv2.CAP_PROP_FRAME_COUNT)) / fps)
         frame_counter = 0
         need_to_decode_counter = 0
 
@@ -47,17 +48,18 @@ class VideoProcessor:
         self._cap.release()
 
         exec_time = round(now() - start_time, 2)
-        return self._analyze_answers(exec_time, filename)
+        return self._analyze_answers(exec_time, filename, duration)
 
     def process_image(self, image):
         self._find_circles(image)
 
-    def _analyze_answers(self, exec_time, filename):
+    def _analyze_answers(self, exec_time, filename, duration):
         if len(self._answers) == 0:
             return {
                 'status_of_switcher': None,
                 'confidence': None,
                 'processed_frames': len(self._answers),
+                'video_duration': duration,
                 'time_execution': exec_time,
                 'url': str(filename)
             }
@@ -71,6 +73,7 @@ class VideoProcessor:
             'status_of_switcher': status,
             'confidence': confidence,
             'processed_frames': len(self._answers),
+            'video_duration': duration,
             'time_execution': exec_time,
             'url': str(filename)
         }
