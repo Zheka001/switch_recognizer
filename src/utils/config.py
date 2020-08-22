@@ -4,7 +4,6 @@ import yaml
 from copy import deepcopy
 
 from easydict import EasyDict
-from pathlib import Path
 
 
 class SingletonMeta(type):
