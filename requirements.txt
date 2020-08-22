@@ -1,0 +1,12 @@
+PyYAML==5.3
+easydict==1.9
+opencv-python==4.4.0.42
+numpy==1.19.1
+
+Flask==1.1.1
+Flask-RESTful==0.3.7
+Flask-Migrate==2.5.2
+Flask-SQLAlchemy==2.4.1
+Flask-Script==2.0.6
+Flask-Cors==3.0.8
+Flask-Login==0.4.1
