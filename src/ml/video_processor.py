@@ -4,18 +4,24 @@ import numpy as np
 import random
 from time import monotonic as now
 
+from src.utils.config import SingleConfig
+
 
 class VideoProcessor:
+    """
+        Класс, предназначенный для обработки видео с целью определения положения элегазового выключателя.
+    """
     def __init__(self):
         self._answers = list()
         self._cap = None
 
-        self._min_circle_radius = 50
-        self._max_circle_radius = 250
-        self._min_hue = 8
-        self._max_hue = 27
-        self._min_area = 500
-        self._frames_per_second = 5
+        config = SingleConfig().video_processor
+        self._min_circle_radius = config.min_circle_radius
+        self._max_circle_radius = config.max_circle_radius
+        self._min_hue = config.min_color_hue
+        self._max_hue = config.max_color_hue
+        self._min_area = config.min_area
+        self._frames_per_second = config.frames_per_second
 
     def run(self, filename):
         start_time = now()
@@ -37,7 +43,6 @@ class VideoProcessor:
             need_to_decode_counter = (need_to_decode_counter + 1) % fps
             if frame is None:
                 continue
-
             self.process_image(frame)
         self._cap.release()
 
@@ -112,32 +117,6 @@ class VideoProcessor:
             # cv2.imshow('rect', image)
             # cv2.imshow('mask', mask)
             # cv2.waitKey(0)
-            return x < image.shape[1] // 2
-
-        return None
-
-    def _check_for_black(self, image):
-        hsv_min = np.array((0, 0, 0), np.uint8)
-        hsv_max = np.array((255, 255, 5), np.uint8)
-
-        # преобразуем RGB картинку в HSV модель
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        # применяем цветовой фильтр
-        mask = cv2.inRange(hsv, hsv_min, hsv_max)
-
-        # вычисляем моменты изображения
-        moments = cv2.moments(mask, 1)
-        m01 = moments['m01']
-        m10 = moments['m10']
-        area = moments['m00']
-
-        if area > 50:
-            x = int(m10 / area)
-            y = int(m01 / area)
-            print(area, x, y, image.shape[:2], x < image.shape[1] // 2)
-            cv2.imshow('rect', image)
-            cv2.imshow('mask', mask)
-            cv2.waitKey(0)
             return x < image.shape[1] // 2
 
         return None

@@ -1,0 +1,22 @@
+general:
+  working_dir: ./
+  resources_dir: ./resources
+  logging_level: DEBUG
+  api_version: 1.0.0.0
+
+video_processor:
+  min_circle_radius: 50  # минимальный радиус круга в пикселях
+  max_circle_radius: 250  # максимальный радиус круга в пикселях
+  min_color_hue: 8  # минимальное значение тона для цветовой модели HSV
+  max_color_hue: 27  # максимальное значение тона для цветовой модели HSV
+  min_area: 500  # минимальная площадь переключателя (оранжевого цвета) в пикселях
+  frames_per_second: 5  # количество анализируемых кадров за секунду видео
+
+flask:
+  SECRET_KEY: very-long-and-very-secret-key
+  ORIGINS: ['http://127.0.0.1:8080', 'http://localhost:8080']
+  SQLALCHEMY_ECHO: False # если True, то SQLAlchemy выводит все сообщения в stderr
+  SQLALCHEMY_TRACK_MODIFICATIONS: False # если True, то Flask-SQLAlchemy отслеживает изменения объектов и посылает соответствующие сигналы
+  REMEMBER_COOKIE_DURATION: 600
+  REMEMBER_COOKIE_HTTPONLY: False
+  REMEMBER_COOKIE_REFRESH_EACH_REQUEST: True
